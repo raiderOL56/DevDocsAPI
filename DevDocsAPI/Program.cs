@@ -1,3 +1,4 @@
+using DevDocsAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
@@ -14,11 +15,13 @@ builder.Services.AddApiVersioning(setup =>
     setup.DefaultApiVersion = new ApiVersion(1, 0);
     setup.AssumeDefaultVersionWhenUnspecified = true;
     setup.ReportApiVersions = true;
-}).AddVersionedApiExplorer(setup =>
+});
+builder.Services.AddVersionedApiExplorer(setup =>
 {
     setup.GroupNameFormat = "'v'VVV";
     setup.SubstituteApiVersionInUrl = true;
 });
+builder.Services.ConfigureOptions<SwaggerOptions>();
 
 var app = builder.Build();
 
