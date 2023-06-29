@@ -22,6 +22,17 @@ builder.Services.AddVersionedApiExplorer(setup =>
     setup.SubstituteApiVersionInUrl = true;
 });
 builder.Services.ConfigureOptions<SwaggerOptions>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "_mySpecificOrigins", policy =>
+    {
+        // policy.WithOrigins("http://localhost:5000", "https://localhost:5000");
+        policy.AllowAnyOrigin();
+        // policy.WithMethods("GET", "POST", "PUT", "DELETE");
+        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -45,6 +56,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("_mySpecificOrigins");
 app.UseAuthorization();
 
 app.MapControllers();
